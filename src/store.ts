@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { COMMODITIES, simulate, type Allocation, type CommodityId, type Env, type Policy, type Trajectory } from './model/sim'
 
 export type Page = 'beranda' | 'simulator' | 'optimasi' | 'struktur'
-export type SpotId = 'bengkel' | 'lab' | 'hub' | 'gudang' | 'pelabuhan'
+export type SpotId = 'bengkel' | 'lab' | 'hub' | 'gudang' | 'sertifikasi' | 'pelabuhan'
 
 // Level visual yang dibaca scene 3D (0–1)
 export interface SceneLevels {

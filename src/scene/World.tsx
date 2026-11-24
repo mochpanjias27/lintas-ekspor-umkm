@@ -333,19 +333,11 @@ function Hub() {
 
 function Gudang() {
   const stack = useRef<THREE.Group>(null!)
-  const badge = useRef<THREE.Group>(null!)
-  const arcRef = useRef<THREE.Mesh>(null!)
-  const lastArc = useRef(-1)
+  const fork = useRef<THREE.Group>(null!)
   useFrame((st) => {
     stack.current.children.forEach((c, i) => (c.visible = i / 12 < 0.1 + live.ekspor))
-    badge.current.rotation.y = st.clock.elapsedTime * 0.8
-    badge.current.position.y = 3.6 + Math.sin(st.clock.elapsedTime * 1.5) * 0.12
-    const q = Math.round(live.sertifikasi * 40) / 40
-    if (q !== lastArc.current) {
-      lastArc.current = q
-      arcRef.current.geometry.dispose()
-      arcRef.current.geometry = new THREE.TorusGeometry(0.55, 0.11, 10, 48, Math.max(0.05, q * Math.PI * 2))
-    }
+    const e = st.clock.elapsedTime * (0.5 + live.utilisasi)
+    fork.current.position.x = 0.4 + Math.sin(e) * 1.1
   })
   const colors = [C.kunyit, C.nila, C.laut]
   return (
@@ -363,20 +355,64 @@ function Gudang() {
           <meshStandardMaterial color={C.road} />
         </mesh>
       ))}
+      {/* forklift kecil mondar-mandir di depan gudang */}
+      <group ref={fork} position={[0.4, 0, 2]}>
+        <RoundedBox args={[0.5, 0.4, 0.4]} radius={0.06} position={[0, 0.3, 0]} castShadow>
+          <meshStandardMaterial color={C.kunyit} />
+        </RoundedBox>
+        <mesh position={[0.32, 0.35, 0]}>
+          <boxGeometry args={[0.05, 0.6, 0.36]} />
+          <meshStandardMaterial color={C.ink} />
+        </mesh>
+        <RoundedBox args={[0.3, 0.25, 0.3]} radius={0.03} position={[0.5, 0.2, 0]} castShadow>
+          <meshStandardMaterial color={C.laut} />
+        </RoundedBox>
+      </group>
       <group ref={stack} position={[2.9, 0, -0.9]}>
         {Array.from({ length: 12 }, (_, i) => (
-          <RoundedBox
-            key={i}
-            args={[0.9, 0.5, 0.45]}
-            radius={0.04}
-            position={[0, 0.25 + Math.floor(i / 4) * 0.52, (i % 4) * 0.5]}
-            castShadow
-          >
+          <RoundedBox key={i} args={[0.9, 0.5, 0.45]} radius={0.04} position={[0, 0.25 + Math.floor(i / 4) * 0.52, (i % 4) * 0.5]} castShadow>
             <meshStandardMaterial color={colors[i % 3]} />
           </RoundedBox>
         ))}
       </group>
-      <group ref={badge} position={[0, 3.6, 0]}>
+    </group>
+  )
+}
+
+function Sertifikasi() {
+  const badge = useRef<THREE.Group>(null!)
+  const arcRef = useRef<THREE.Mesh>(null!)
+  const lastArc = useRef(-1)
+  useFrame((st) => {
+    badge.current.rotation.y = st.clock.elapsedTime * 0.8
+    badge.current.position.y = 2.9 + Math.sin(st.clock.elapsedTime * 1.5) * 0.12
+    const q = Math.round(live.sertifikasi * 40) / 40
+    if (q !== lastArc.current) {
+      lastArc.current = q
+      arcRef.current.geometry.dispose()
+      arcRef.current.geometry = new THREE.TorusGeometry(0.55, 0.11, 10, 48, Math.max(0.05, q * Math.PI * 2))
+    }
+  })
+  return (
+    <group position={[2.4, 0, -0.2]}>
+      {/* kantor bertiang, seperti lembaga sertifikasi */}
+      <RoundedBox args={[2.4, 0.25, 1.8]} radius={0.06} position={[0, 0.12, 0]} receiveShadow castShadow>
+        <meshStandardMaterial color={C.road} />
+      </RoundedBox>
+      <RoundedBox args={[2, 1.2, 1.3]} radius={0.12} position={[0, 0.85, -0.1]} castShadow receiveShadow>
+        <meshStandardMaterial color={C.wall} />
+      </RoundedBox>
+      {[-0.75, -0.25, 0.25, 0.75].map((x) => (
+        <mesh key={x} position={[x, 0.85, 0.68]} castShadow>
+          <cylinderGeometry args={[0.07, 0.07, 1.2, 12]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      ))}
+      <mesh position={[0, 1.75, 0.05]} rotation={[0, Math.PI / 4, 0]} castShadow>
+        <coneGeometry args={[1.55, 0.6, 4]} />
+        <meshStandardMaterial color={C.daun} />
+      </mesh>
+      <group ref={badge} position={[0, 2.9, 0]}>
         <mesh>
           <torusGeometry args={[0.55, 0.05, 8, 48]} />
           <meshStandardMaterial color={C.road} />
@@ -388,6 +424,10 @@ function Gudang() {
         <mesh>
           <circleGeometry args={[0.4, 32]} />
           <meshStandardMaterial color="#ffffff" side={THREE.DoubleSide} />
+        </mesh>
+        <mesh position={[0, 0, 0.01]}>
+          <ringGeometry args={[0.16, 0.24, 32]} />
+          <meshBasicMaterial color={C.daun} side={THREE.DoubleSide} />
         </mesh>
       </group>
     </group>
@@ -504,7 +544,8 @@ function Trees() {
       (x > -12.2 && x < -6.6 && z > 1.6 && z < 6.4) ||
       (x > -12 && x < -7 && z > -7.4 && z < -2.6) ||
       (x > -4.6 && x < 0.6 && z > -9.2 && z < -3.8) ||
-      (x > -1 && x < 5.4 && z > 1.6 && z < 5.6) ||
+      (x > -1 && x < 5.4 && z > 1.6 && z < 6.2) ||
+      (x > 0.6 && x < 4.2 && z > -1.6 && z < 1.3) ||
       (x > -8 && x < 0 && z > 1.2 && z < 3)
     while (pts.length < 26) {
       const x = -13.5 + r() * 19.5
@@ -566,7 +607,8 @@ export const SPOTS: { id: SpotId; label: string; pos: [number, number, number] }
   { id: 'bengkel', label: 'Bengkel produksi', pos: [-9.5, 3.5, 4] },
   { id: 'lab', label: 'Lab inovasi', pos: [-9.5, 5.4, -5] },
   { id: 'hub', label: 'Hub platform digital', pos: [-2, 5.6, -6.5] },
-  { id: 'gudang', label: 'Gudang & sertifikasi', pos: [1.5, 4.7, 3.6] },
+  { id: 'gudang', label: 'Gudang', pos: [1.5, 3.7, 3.6] },
+  { id: 'sertifikasi', label: 'Kantor sertifikasi', pos: [2.4, 4.7, -0.2] },
   { id: 'pelabuhan', label: 'Pelabuhan ekspor', pos: [9.4, 4.6, -0.3] },
 ]
 
@@ -630,6 +672,7 @@ export function World() {
       <Lab />
       <Hub />
       <Gudang />
+      <Sertifikasi />
       <Pelabuhan />
       {[0, 1, 2].map((i) => (
         <Ship key={i} index={i} />

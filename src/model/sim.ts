@@ -1,7 +1,7 @@
 // Mesin sistem dinamis UMKM ekspor (langkah bulanan, metode Euler).
 // Satuan uang: juta rupiah. Semua parameter dapat dikalibrasi ulang dengan data mitra.
 
-export type CommodityId = 'kerajinan' | 'kopi' | 'pangan' | 'fesyen'
+export type CommodityId = 'kerajinan' | 'kopi' | 'pangan' | 'fashion'
 
 export interface Commodity {
   id: CommodityId
@@ -24,7 +24,7 @@ export const COMMODITIES: Commodity[] = [
   { id: 'kerajinan', name: 'Kerajinan anyaman & bordir', short: 'Kerajinan', priceUSD: 1200, unitCost: 11, ordersPerBuyer: 0.6, market: 110, cap0: 22, p: 0.004, q: 0.22, tauCert: 4, K0: 0.25, S0: 0.3, D0: 0.2 },
   { id: 'kopi', name: 'Kopi spesialti', short: 'Kopi', priceUSD: 2400, unitCost: 26, ordersPerBuyer: 0.45, market: 80, cap0: 14, p: 0.005, q: 0.26, tauCert: 6, K0: 0.2, S0: 0.25, D0: 0.25 },
   { id: 'pangan', name: 'Makanan olahan', short: 'Pangan olahan', priceUSD: 1700, unitCost: 17, ordersPerBuyer: 0.8, market: 130, cap0: 26, p: 0.003, q: 0.24, tauCert: 10, K0: 0.2, S0: 0.15, D0: 0.2 },
-  { id: 'fesyen', name: 'Fesyen muslim', short: 'Fesyen', priceUSD: 1500, unitCost: 14, ordersPerBuyer: 0.7, market: 120, cap0: 22, p: 0.005, q: 0.3, tauCert: 3, K0: 0.3, S0: 0.35, D0: 0.3 },
+  { id: 'fashion', name: 'Fashion muslim', short: 'Fashion', priceUSD: 1500, unitCost: 14, ordersPerBuyer: 0.7, market: 120, cap0: 22, p: 0.005, q: 0.3, tauCert: 3, K0: 0.3, S0: 0.35, D0: 0.3 },
 ]
 
 export interface Allocation {

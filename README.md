@@ -8,7 +8,7 @@ Semua perhitungan (simulasi sistem dinamis, Monte Carlo, VaR/CVaR, dan optimasi 
 
 | Halaman | Isi |
 |---|---|
-| Beranda | Scene 3D isometrik beranimasi: bengkel produksi, lab inovasi, hub platform digital, gudang & sertifikasi, pelabuhan ekspor. Klik bangunan untuk melihat perannya dalam model. |
+| Beranda | Scene 3D isometrik beranimasi: bengkel produksi, lab inovasi, hub platform digital, gudang, kantor sertifikasi, pelabuhan ekspor. Klik bangunan untuk melihat perannya dalam model. |
 | Simulator | Pilih komoditas, atur anggaran, alokasi, kurs, dan tarif. Simulasi 60 bulan diputar langsung di scene 3D (jumlah truk, kapal, paket data, dan kontainer mengikuti hasil model) beserta grafik dan KPI. |
 | Optimasi & risiko | Optimasi alokasi anggaran pada simpleks dengan 3 sikap risiko (netral, seimbang mean–CVaR, robust CVaR 95%), histogram laba kumulatif, VaR, CVaR, dan peluang rugi. Hasil bisa diterapkan ke simulator. |
 | Struktur model | Diagram sebab-akibat interaktif (loop R1, R2, B1, B2) dan persamaan inti. |

@@ -56,8 +56,14 @@ const SPOT_INFO: Record<SpotId, { title: string; body: string; model: string; me
     metric: (s, i) => `Adopsi digital ${(s.traj.D[i] * 100).toFixed(0)}/100`,
   },
   gudang: {
-    title: 'Gudang & sertifikasi',
-    body: 'Sertifikasi seperti halal, HACCP, atau standar negara tujuan menjadi syarat masuk pasar. Prosesnya lambat, sehingga hasil anggaran sertifikasi baru terlihat beberapa bulan kemudian. Cincin hijau menunjukkan tingkat kesiapannya.',
+    title: 'Gudang',
+    body: 'Produk jadi dari bengkel dikumpulkan, dikemas, dan disiapkan untuk dikirim ke pelabuhan. Tumpukan kontainer bertambah seiring naiknya nilai ekspor. Jumlah yang terkirim dibatasi kapasitas produksi.',
+    model: 'Aliran penjualan, yaitu nilai terkecil antara permintaan dan kapasitas',
+    metric: (s, i) => `Terkirim ${(s.traj.capacity[i] * s.traj.utilization[i]).toFixed(0)} pesanan/bulan`,
+  },
+  sertifikasi: {
+    title: 'Kantor sertifikasi',
+    body: 'Sertifikasi seperti halal, HACCP, atau standar negara tujuan menjadi syarat masuk pasar. Prosesnya lambat, sehingga hasil anggaran sertifikasi baru terlihat beberapa bulan kemudian. Cincin hijau di atas gedung menunjukkan tingkat kesiapannya.',
     model: 'Stok kesiapan sertifikasi S (tunda orde satu)',
     metric: (s, i) => `Kesiapan ${(s.traj.S[i] * 100).toFixed(0)}/100`,
   },
@@ -100,7 +106,7 @@ export function Home() {
   return (
     <>
       <section className="glass hero">
-        <h1>Dari bengkel kecil ke pasar dunia.</h1>
+        <h1>Dari UMKM menuju ke pasar dunia.</h1>
         <p>
           Simulasikan bagaimana inovasi produk dan platform digital membawa UMKM menembus pasar ekspor, lalu temukan alokasi anggaran terbaik dengan
           risiko yang terukur.
